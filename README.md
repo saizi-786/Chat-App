@@ -12,3 +12,4 @@ Features
  Chat message transition animations  
  Responsive on mobile and desktop  
  Dummy bot replies (simulated)
+live on https://loxo.netlify.app/
