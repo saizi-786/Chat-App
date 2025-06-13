@@ -33,7 +33,7 @@ function ChatInput({ onSend }) {
           onKeyPress={handleKeyPress}
         />
         <button className="btn btn-primary" onClick={handleSend} disabled={!text.trim()}>
- Send
+  <i className="bi bi-telegram fs-4"></i>
 </button>
 
       </div>
