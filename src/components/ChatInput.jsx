@@ -1,24 +1,13 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './ChatInput.css';
 
-function ChatInput({ onSend }) {
+function ChatInput({ onSend, onTyping }) {
   const [text, setText] = useState('');
-  const [isAnimating, setIsAnimating] = useState(false);
 
   const handleSend = () => {
     if (!text.trim()) return;
-
-    setIsAnimating(true);
     onSend(text);
     setText('');
-
-    setTimeout(() => {
-      setIsAnimating(false);
-    }, 500); // duration of spin
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') handleSend();
   };
 
   return (
@@ -29,13 +18,16 @@ function ChatInput({ onSend }) {
           className="form-control"
           placeholder="Type a message..."
           value={text}
-          onChange={(e) => setText(e.target.value)}
-          onKeyPress={handleKeyPress}
+          onChange={(e) => {
+            setText(e.target.value);
+            onTyping(true);
+            setTimeout(() => onTyping(false), 1000);
+          }}
+          onKeyPress={(e) => e.key === 'Enter' && handleSend()}
         />
         <button className="btn btn-primary" onClick={handleSend} disabled={!text.trim()}>
-  <i className="bi bi-telegram fs-4"></i>
-</button>
-
+          <i className="bi bi-telegram fs-4"></i>
+        </button>
       </div>
     </div>
   );

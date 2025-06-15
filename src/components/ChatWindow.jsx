@@ -1,20 +1,37 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
-function ChatWindow({ messages }) {
-  const endRef = useRef();
+function ChatWindow({ messages, typing }) {
+  const containerRef = useRef();
 
   useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: 'smooth' });
+    containerRef.current?.scrollTo({ top: containerRef.current.scrollHeight, behavior: 'smooth' });
   }, [messages]);
 
   return (
-    <div className="flex-grow-1 overflow-auto p-3" style={{ marginTop: '56px' }}>
+    <div className="p-3 overflow-auto flex-grow-1 chat-window" ref={containerRef}>
       {messages.map((msg, index) => (
-        <div key={index} className="d-flex mb-2">
-          <div className="bg-secondary text-white p-2 rounded">{msg}</div>
+        <div key={index} className="d-flex justify-content-end mb-2">
+          <div
+            className="p-2 rounded bg-primary text-white"
+            style={{ maxWidth: '70%' }}
+          >
+            <div>{msg.text}</div>
+            <small className="text-white-50 d-block mt-1">
+              {msg.timestamp} • {msg.status}
+            </small>
+          </div>
         </div>
       ))}
-      <div ref={endRef} />
+
+      {typing && (
+        <div className="d-flex justify-content-end mb-2">
+          <div className="p-2 rounded bg-light">
+            <div className="typing-indicator">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

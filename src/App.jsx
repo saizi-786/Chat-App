@@ -1,128 +1,76 @@
-// ✅ Enhancements for chat app with animations and typing indicator
+// 📁 src/App.jsx
 
-import { useEffect, useRef, useState } from 'react';
+import { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './App.css';
 
-const contacts = [
-  { id: 1, name: 'Alice' },
-  { id: 2, name: 'Bob' }
-];
-
-function ChatNavbar() {
-  return (
-    <nav className="navbar navbar-dark bg-primary fixed-top">
-      <div className="container-fluid">
-        <span className="navbar-brand mb-0 h1">Chat App</span>
-      </div>
-    </nav>
-  );
-}
-
-function ContactSidebar({ contacts, onSelect, selectedId, isCollapsed, toggleSidebar }) {
-  return (
-    <div className={`bg-light border-end h-100 sidebar ${isCollapsed ? 'collapsed' : ''}`}> 
-      <div className="d-flex justify-content-between align-items-center p-2 border-bottom">
-        <strong>Contacts</strong>
-        <button className="btn btn-sm btn-outline-secondary" onClick={toggleSidebar}>
-          <i className={`bi ${isCollapsed ? 'bi-chevron-right' : 'bi-chevron-left'}`}></i>
-        </button>
-      </div>
-      <div className="list-group">
-        {contacts.map((contact) => (
-          <button
-            key={contact.id}
-            className={`list-group-item list-group-item-action ${
-              selectedId === contact.id ? 'active' : ''
-            }`}
-            onClick={() => onSelect(contact.id)}
-          >
-            {contact.name}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function ChatWindow({ messages, typing }) {
-  const containerRef = useRef();
-
-  useEffect(() => {
-    containerRef.current?.scrollTo({ top: containerRef.current.scrollHeight, behavior: 'smooth' });
-  }, [messages]);
-
-  return (
-    <div className="p-3 overflow-auto flex-grow-1 chat-window" ref={containerRef}>
-      {messages.map((msg, index) => (
-        <div key={index} className={`chat-message ${msg.sentByMe ? 'sent' : 'received'}`}>
-          <div className="p-2 rounded">
-            <div>{msg.text}</div>
-            <small className="text-muted d-block mt-1">{msg.status}</small>
-          </div>
-        </div>
-      ))}
-      {typing && (
-        <div className="chat-message received">
-          <div className="p-2 rounded bg-light">
-            <div className="typing-indicator">
-              <span></span><span></span><span></span>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-function ChatInput({ onSend, onTyping }) {
-  const [text, setText] = useState('');
-
-  const handleSend = () => {
-    if (!text.trim()) return;
-    onSend(text);
-    setText('');
-  };
-
-  return (
-    <div className="p-3 border-top bg-white">
-      <div className="input-group">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Type a message..."
-          value={text}
-          onChange={(e) => {
-            setText(e.target.value);
-            onTyping(true);
-            setTimeout(() => onTyping(false), 1000);
-          }}
-          onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-        />
-        <button className="btn btn-primary" onClick={handleSend} disabled={!text.trim()}>
-          <i className="bi bi-telegram fs-4"></i>
-        </button>
-      </div>
-    </div>
-  );
-}
+import ChatNavbar from './components/ChatNavbar';
+import ContactSidebar from './components/ContactSidebar';
+import ChatWindow from './components/chatWindow'; 
+import ChatInput from './components/ChatInput';
 
 function App() {
+  const [contacts, setContacts] = useState([
+    { id: 1, name: 'Faisal', online: true },
+    { id: 2, name: 'Afzal', online: false },
+    { id: 3, name: 'Huzaifa', online: true },
+    { id: 4, name: 'Owais', online: false },
+    { id: 5, name: 'Ammar', online: true },
+    { id: 6, name: 'Hummam', online: false },
+    { id: 7, name: 'Shaheer', online: true },
+    { id: 8, name: 'Shayan', online: false },
+    { id: 9, name: 'Hammad', online: true },
+    { id: 10, name: 'Misbah', online: false },
+    { id: 11, name: 'Sufiyan', online: true },
+    { id: 12, name: 'Nyle', online: false }
+  ]);
+
   const [selectedContactId, setSelectedContactId] = useState(1);
   const [messages, setMessages] = useState({
-    1: [{ text: 'Hi Alice!', sentByMe: true, status: 'Sent' }],
-    2: [{ text: 'Hey Bob!', sentByMe: true, status: 'Sent' }]
+    1: [{ text: 'Hi Faisal!', sentByMe: true, status: 'Sent', timestamp: '10:15 AM' }],
+    2: [{ text: 'Hey Afzal!', sentByMe: true, status: 'Sent', timestamp: '10:16 AM' }],
+    3: [{ text: 'Hello Huzaifa!', sentByMe: true, status: 'Sent', timestamp: '10:17 AM' }],
+    4: [{ text: 'Good morning Owais!', sentByMe: true, status: 'Sent', timestamp: '10:18 AM' }],
+    5: [{ text: 'How are you, Ammar?', sentByMe: true, status: 'Sent', timestamp: '10:19 AM' }],
+    6: [{ text: 'Hey Hummam!', sentByMe: true, status: 'Sent', timestamp: '10:20 AM' }],
+    7: [{ text: 'Hello Shaheer!', sentByMe: true, status: 'Sent', timestamp: '10:21 AM' }],
+    8: [{ text: "What's up, Shayan?", sentByMe: true, status: 'Sent', timestamp: '10:22 AM' }],
+    9: [{ text: 'Hi Hammad!', sentByMe: true, status: 'Sent', timestamp: '10:23 AM' }],
+    10: [{ text: 'Hey Misbah!', sentByMe: true, status: 'Sent', timestamp: '10:24 AM' }],
+    11: [{ text: 'Sufiyan, are you there?', sentByMe: true, status: 'Sent', timestamp: '10:25 AM' }],
+    12: [{ text: 'Morning Nyle!', sentByMe: true, status: 'Sent', timestamp: '10:26 AM' }]
   });
+
   const [isTyping, setIsTyping] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
+  // 🔁 Randomly toggle online/offline status every 4s
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setContacts(prev =>
+        prev.map(contact =>
+          Math.random() > 0.5
+            ? { ...contact, online: !contact.online }
+            : contact
+        )
+      );
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
   const handleSend = (text) => {
-    const newMsg = { text, sentByMe: true, status: 'Sent' };
+    const newMsg = {
+      text,
+      sentByMe: true,
+      status: 'Sent',
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
     setMessages((prev) => ({
       ...prev,
       [selectedContactId]: [...(prev[selectedContactId] || []), newMsg]
     }));
+
     setTimeout(() => {
       setMessages((prev) => ({
         ...prev,
@@ -136,14 +84,35 @@ function App() {
   return (
     <div>
       <ChatNavbar />
-      <div className="d-flex" style={{ marginTop: '56px', height: 'calc(100vh - 56px)' }}>
-        <ContactSidebar
-          contacts={contacts}
-          onSelect={setSelectedContactId}
-          selectedId={selectedContactId}
-          isCollapsed={isCollapsed}
-          toggleSidebar={() => setIsCollapsed(!isCollapsed)}
-        />
+      <div
+        className={`d-flex transition-all duration-300 ease-in-out ${isCollapsed ? 'sidebar-collapsed' : ''}`}
+        style={{ marginTop: '56px', height: 'calc(100vh - 56px)' }}
+      >
+        {isCollapsed ? (
+          <div
+            className="bg-light border-end d-flex align-items-center justify-content-center"
+            style={{ width: '40px', transition: 'width 0.3s ease' }}
+          >
+            <button
+              className="btn btn-sm btn-outline-secondary"
+              onClick={() => setIsCollapsed(false)}
+              title="Show Contacts"
+            >
+              <i className="bi bi-chevron-right"></i>
+            </button>
+          </div>
+        ) : (
+          <div style={{ transition: 'width 0.3s ease' }}>
+            <ContactSidebar
+              contacts={contacts}
+              onSelect={setSelectedContactId}
+              selectedId={selectedContactId}
+              isCollapsed={isCollapsed}
+              toggleSidebar={() => setIsCollapsed(true)}
+            />
+          </div>
+        )}
+
         <div className="d-flex flex-column flex-grow-1">
           <ChatWindow messages={messages[selectedContactId] || []} typing={isTyping} />
           <ChatInput onSend={handleSend} onTyping={setIsTyping} />
