@@ -1,4 +1,4 @@
-import './ChatNavbar.css';
+import './Chatnavbar.css';
 
 function ChatNavbar() {
   return (
