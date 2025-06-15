@@ -1,5 +1,3 @@
-// 📁 src/App.jsx
-
 import { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -45,7 +43,7 @@ function App() {
   const [isTyping, setIsTyping] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
-  // 🔁 Randomly toggle online/offline status every 4s
+  
   useEffect(() => {
     const interval = setInterval(() => {
       setContacts(prev =>
