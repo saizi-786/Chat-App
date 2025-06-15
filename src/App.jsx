@@ -5,7 +5,7 @@ import './App.css';
 
 import ChatNavbar from './components/ChatNavbar';
 import ContactSidebar from './components/ContactSidebar';
-import ChatWindow from './components/chatWindow'; 
+import ChatWindow from './components/ChatWindow'; 
 import ChatInput from './components/ChatInput';
 
 function App() {
